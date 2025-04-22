@@ -1,0 +1,32 @@
+ Building a Prompt-Completion Pairs
+
+import pandas as pd
+import json
+
+# Build prompt-completion pairs
+records = []
+for _, row in DataAll.iterrows(): ### Columns in Anthropometric Indices
+    prompt = (
+        f"Age: {row['age']}, Sex: {row['sex']}, Height: {row['height(cm)']} cm, " 
+        f"Weight: {row['weight(kg)']} kg, WC: {row['WC(cm)']} cm"
+    )
+    completion = (
+        f"BMI: {row['BMI']:.2f}, WHTR: {row['WHTR']:.2f}, BFP: {row['BFP']:.2f}%, "
+        f"LBM: {row['LBM']:.2f} kg, BMI Category: {row['BMI_Category']}, "
+        f"BFP Category: {row['BFP_Category']}, Interpretation: {row['BFP explanation']}"
+    )
+    records.append({"prompt": prompt, "completion": completion})
+
+# Save to JSONL
+with open("anthro_train.jsonl", "w") as f:
+    for record in records:
+        json.dump(record, f)
+        f.write("\n")
+
+##
+#AntDatpromt.to_json("anthro_ai_data.jsonl", orient="records", lines=True)
+
+
+##
+AntDatpromt=pd.read_json('anthro_train.jsonl', lines=True)
+AntDatpromt
